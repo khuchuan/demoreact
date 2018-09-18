@@ -10,11 +10,23 @@ const list = [
     { category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7" }
 ];
 
+var lastCategory = '';
+
+var ShowCategory = (item) => {
+    if (lastCategory !== item.category) {
+        lastCategory = item.category;
+        return <tr><td colSpan="2">{item.category}</td></tr>;
+    }
+    return '';
+};
+
+
 class ProductTable extends Component {
     constructor(props) {
         super(props);
         this.state = { list: list, };
     }
+
 
     render() {
 
@@ -28,14 +40,18 @@ class ProductTable extends Component {
                             <td>Price</td>
                         </tr>
                     </thead>
-                    <tbody>
-                        {this.state.list.map(item =>
-                            <tr key={item.name} >
+
+                    {this.state.list.map(item => (
+                        <tbody>
+                            {ShowCategory(item)}
+                            <tr>
                                 <td> {item.name} </td>
                                 <td> {item.price} </td>
                             </tr>
-                        )}
-                    </tbody>
+                        </tbody>
+                    )
+                    )}
+
                 </table>
             </div>
         );
