@@ -13,18 +13,35 @@ const list = [
 ];
 
 class App extends Component {
-
   constructor(props) {
     super(props);
-    this.state = { list: list, };
+    this.state = {
+      searchTerm: '',
+      list: list
+    };
+
+    this.onSearchChange = this.onSearchChange.bind(this);
+  }
+
+  onSearchChange(event) {
+    // console.log('searchTerm: ', event.target.value);
+    var conditionSearch = event.target.value;
+    this.setState({ searchTerm: conditionSearch });
+    // console.log("List: " + JSON.stringify( this.state.list));
+    this.setState({
+      list: (conditionSearch.trim().length === 0) ? list: this.state.list.filter(
+        function (element) { return element.name.toLowerCase().includes(conditionSearch.toLowerCase()) }
+      )
+    });
   }
 
   render() {
+    const { searchTerm, list } = this.state;
     return (
 
       <div className="App">
-        <SearchBar />
-        <ProductTable />
+        <SearchBar value={searchTerm} onChange={this.onSearchChange} />
+        <ProductTable data={list} />
       </div>
     );
   }
